@@ -9,3 +9,5 @@ V40.7 — mobile popup fixed, minimal music control, and user-provided `Give Me 
 ## Deployment
 
 This repository is intended for GitHub Pages.
+
+<!-- GitHub Pages deployment trigger -->
