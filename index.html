@@ -943,7 +943,7 @@ html{scroll-behavior:smooth}
 
 
 </head><body>
-<div class="v40-badge" id="v40Badge">Clean Build · V40</div>
+<div class="v40-badge" id="v40Badge">Clean Build · V40.14</div>
 <div class="v40-health" id="v40Health">
   <h4>V40 Build Health</h4>
   <div id="v40HealthRows"></div>
@@ -1850,69 +1850,118 @@ async function ask(){const q=$('aiQuestion').value.trim();if(!q)return;addChatBu
 
 
 
-<!-- V40.5 — GIVE ME YOUR FOREVER / AUTOPLAY -->
-<audio id="loveSongAudio" autoplay loop preload="auto" playsinline
+<!-- V40.10 — YES / NO FIRST, POPUP ONLY AFTER YES -->
+<audio id="loveSongAudio" loop preload="auto" playsinline
   src="give-me-your-forever.mp3"></audio>
 
-<div id="audioUnlock" style="
-      position:fixed;inset:0;z-index:99999;display:none;
-      align-items:center;justify-content:center;padding:20px;box-sizing:border-box;
-      background:rgba(0,0,0,.34);backdrop-filter:blur(9px);
+<!-- V40.14 — SWEET ROMANTIC MUSIC OVERLAY -->
+<div id="musicChoice" style="
+  position:fixed;inset:0;z-index:99999;display:flex;
+  align-items:center;justify-content:center;padding:20px;
+  box-sizing:border-box;background:
+    radial-gradient(circle at 50% 42%,rgba(255,180,210,.12),transparent 42%),
+    rgba(7,5,12,.58);
+  backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px);
+">
+  <div style="
+    position:relative;width:min(350px,86vw);
+    padding:34px 24px 27px;
+    border:1px solid rgba(255,210,228,.22);
+    border-radius:30px;
+    background:
+      linear-gradient(145deg,rgba(43,25,40,.94),rgba(17,13,25,.96));
+    color:#fff;text-align:center;
+    box-shadow:0 28px 90px rgba(0,0,0,.58),
+               0 0 45px rgba(255,145,190,.08);
+    overflow:hidden;
+  ">
+    <div style="
+      position:absolute;inset:-80px auto auto 50%;
+      width:180px;height:180px;transform:translateX(-50%);
+      background:rgba(255,150,195,.08);border-radius:50%;
+      filter:blur(20px);pointer-events:none;
+    "></div>
+
+    <div style="
+      position:relative;font-size:24px;margin-bottom:13px;
+      line-height:1;
+    ">♡</div>
+
+    <div style="
+      position:relative;font-family:Georgia,'Times New Roman',serif;
+      font-size:21px;line-height:1.35;font-weight:600;
+      letter-spacing:.04em;
+    ">GIVE ME YOUR FOREVER</div>
+
+    <div style="
+      position:relative;margin:10px auto 22px;
+      font-family:Georgia,'Times New Roman',serif;
+      font-size:12px;line-height:1.6;
+      color:rgba(255,235,243,.68);
+      max-width:245px;
+    ">A little song for our little story ♡</div>
+
+    <div style="
+      position:relative;display:flex;justify-content:center;
+      gap:12px;
     ">
-      <div style="
-        width:min(300px,82vw);padding:24px 20px 20px;
-        border:1px solid rgba(255,255,255,.15);border-radius:24px;
-        background:rgba(20,14,25,.88);backdrop-filter:blur(22px);
-        color:#fff;text-align:center;box-shadow:0 20px 70px rgba(0,0,0,.45);
-      ">
-        <div style="font-size:32px;line-height:1;margin-bottom:10px">♫</div>
-        <div style="font-weight:700;font-size:16px">Give Me Your Forever</div>
-        <div style="font-size:12px;opacity:.68;margin:7px 0 18px">
-          Tap sekali untuk memulai love song.
-        </div>
-        <button id="audioUnlockBtn" aria-label="Putar lagu" style="
-          border:0;background:transparent;color:#fff;cursor:pointer;
-          font-size:30px;line-height:1;padding:8px 14px;
-          opacity:.9;transition:transform .2s ease,opacity .2s ease;
-        ">♫</button>
-      </div>
+      <button id="musicYesBtn" type="button" style="
+        min-width:100px;border:1px solid rgba(255,220,235,.28);
+        border-radius:14px;padding:11px 20px;
+        background:linear-gradient(135deg,rgba(255,180,210,.22),rgba(255,255,255,.10));
+        color:#fff;font-size:12px;font-weight:700;
+        letter-spacing:.08em;cursor:pointer;
+        box-shadow:0 7px 20px rgba(0,0,0,.16);
+      ">YES ♡</button>
+
+      <button id="musicNoBtn" type="button" style="
+        min-width:100px;border:1px solid rgba(255,255,255,.12);
+        border-radius:14px;padding:11px 20px;
+        background:rgba(255,255,255,.035);
+        color:rgba(255,255,255,.64);
+        font-size:12px;font-weight:700;
+        letter-spacing:.08em;cursor:pointer;
+      ">NO</button>
     </div>
+
+    <div id="noHint" style="
+      position:relative;display:none;margin-top:14px;
+      font-family:Georgia,'Times New Roman',serif;
+      font-size:11px;color:rgba(255,220,235,.64);
+    ">Hehe... the song is still waiting for you ♡</div>
+  </div>
+</div>
 
 <script>
 (function(){
   const audio = document.getElementById('loveSongAudio');
-  const box = document.getElementById('audioUnlock');
-  const btn = document.getElementById('audioUnlockBtn');
-  if (!audio) return;
+  const choice = document.getElementById('musicChoice');
+  const yes = document.getElementById('musicYesBtn');
+  const no = document.getElementById('musicNoBtn');
+  const hint = document.getElementById('noHint');
+  if (!audio || !choice || !yes || !no) return;
 
   audio.volume = 0.55;
 
-  function startAudio(){
-    audio.muted = false;
-    const p = audio.play();
-    if (p && p.catch) {
-      p.catch(function(){
-        if (box) box.style.display = 'flex';
-      });
-    }
-  }
-
-  // Autoplay attempt immediately when the scrapbook opens.
-  startAudio();
-
-  // Android/Chrome fallback: first user interaction unlocks audio.
-  function unlock(){
+  // YES = play song and close the overlay.
+  yes.addEventListener('click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
     audio.muted = false;
     audio.volume = 0.55;
-    startAudio();
-    if (box) box.style.display = 'none';
-  }
+    const p = audio.play();
+    if (p && p.catch) p.catch(function(){});
+    choice.style.display = 'none';
+  });
 
-  document.addEventListener('pointerdown', unlock, {once:true, passive:true});
-  document.addEventListener('touchstart', unlock, {once:true, passive:true});
-  if (btn) btn.addEventListener('click', function(e){
+  // NO = intentionally keep the overlay open.
+  no.addEventListener('click', function(e){
+    e.preventDefault();
     e.stopPropagation();
-    unlock();
+    audio.pause();
+    try { audio.currentTime = 0; } catch(err) {}
+    choice.style.display = 'flex';
+    if (hint) hint.style.display = 'block';
   });
 })();
 </script>
@@ -1953,5 +2002,168 @@ async function ask(){const q=$('aiQuestion').value.trim();if(!q)return;addChatBu
   });
 })();
 </script>
+
+
+<style id="v408-mobile-full-width">
+/* V40.8 — Mobile Full Width
+   Desktop remains unchanged. Mobile scrapbook surfaces expand to the viewport. */
+@media (max-width: 800px){
+  html, body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+  }
+
+  .shell{
+    width:100%;
+    max-width:none;
+    margin:0;
+    padding-left:8px !important;
+    padding-right:8px !important;
+  }
+
+  .topbar{
+    width:100%;
+    padding-left:4px;
+    padding-right:4px;
+    gap:8px;
+  }
+
+  .v38-quick-nav{
+    width:100%;
+    max-width:none;
+    margin-left:0;
+    margin-right:0;
+    border-radius:16px;
+  }
+
+  .v17-chapter-nav{
+    width:100%;
+    max-width:none;
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  section{
+    width:100%;
+    max-width:none;
+  }
+
+  /* Main scrapbook cards */
+  .scrapbook-page{
+    width:100%;
+    max-width:none;
+    margin-left:0 !important;
+    margin-right:0 !important;
+    padding-left:16px !important;
+    padding-right:16px !important;
+    border-radius:3px;
+  }
+
+  /* Keep inner content from creating an artificial desktop-sized rail. */
+  .scrapbook-page > *,
+  section > .section-head,
+  section > .prologue,
+  section > .turn,
+  section > .twentyseven,
+  section > .then-now,
+  section > .constellation-wrap,
+  section > .explorer-wrap,
+  section > .calendar-wrap{
+    max-width:100%;
+  }
+
+  .story-opening{
+    width:100% !important;
+    grid-template-columns:1fr !important;
+    padding:24px 16px !important;
+  }
+
+  .story-opening .hero-art{
+    width:100%;
+    min-width:0;
+  }
+
+  .story-opening h1{
+    max-width:100%;
+  }
+
+  .story-opening .lede{
+    max-width:100%;
+  }
+
+  .counter-wrap{
+    width:100%;
+  }
+
+  /* Other wide visual sections */
+  .little-manifesto,
+  .keepsake-grid,
+  .little-scene,
+  .episode-rail,
+  .episode-grid-static,
+  .signature-quote-grid,
+  .ci-grid,
+  .rt-grid,
+  .db-chart-grid,
+  .changes,
+  .evolution,
+  .turn{
+    width:100%;
+    max-width:100%;
+  }
+
+  .manifesto-paper,
+  .rhythm-paper,
+  .constellation-wrap,
+  .db-panel,
+  .ci-panel,
+  .rt-panel{
+    max-width:100%;
+  }
+
+  /* Prevent cards from looking like a narrow desktop canvas. */
+  .episode,
+  .episode-static,
+  .v17-27-card,
+  .ritual-card,
+  .memory-card,
+  .album-month{
+    max-width:100%;
+  }
+
+  /* Floating decorative stickers stay inside the viewport. */
+  .scrap-sticker{
+    max-width:12vw;
+  }
+}
+
+@media (max-width:430px){
+  .shell{
+    padding-left:5px !important;
+    padding-right:5px !important;
+  }
+
+  .scrapbook-page{
+    padding-left:13px !important;
+    padding-right:13px !important;
+  }
+
+  .story-opening{
+    padding-left:13px !important;
+    padding-right:13px !important;
+  }
+
+  .v38-quick-nav{
+    margin-top:8px;
+    margin-bottom:14px;
+  }
+
+  .v17-chapter-nav{
+    padding-left:7px;
+    padding-right:7px;
+  }
+}
+</style>
 
 </body></html>
