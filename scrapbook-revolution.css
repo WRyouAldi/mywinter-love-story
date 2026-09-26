@@ -1,0 +1,48 @@
+/* MYWINTER LOVE STORY — SCRAPBOOK REVOLUTION V1 */
+:root{
+  --paper:#f4eee5;--paper2:#e9dfd2;--ink:#241c1d;--muted:#786a68;
+  --wine:#6d3044;--rose:#b66b7d;--blush:#d9aab3;--night:#111016;--gold:#c9a46a;
+  --shadow:0 22px 60px rgba(0,0,0,.28);--soft-shadow:0 10px 28px rgba(20,12,16,.16);
+}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(circle at 20% 0%,rgba(182,107,125,.14),transparent 32%),radial-gradient(circle at 85% 20%,rgba(201,164,106,.09),transparent 28%),#120f13!important;color:#f7f0ea!important}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.08;background-image:radial-gradient(#fff 0.7px,transparent .7px);background-size:5px 5px;mix-blend-mode:soft-light}
+/* Make the main experience feel like an album, not a dashboard */
+section,main,article,.section,.chapter,.card,.memory-card,.memory,.quote-card,.timeline-card,.calendar-card,.chat-card{border-radius:18px!important}
+.card,.memory-card,.memory,.quote-card,.timeline-card,.calendar-card,.chat-card{box-shadow:var(--soft-shadow)!important;border:1px solid rgba(201,164,106,.22)!important;background:linear-gradient(145deg,rgba(244,238,229,.98),rgba(233,223,210,.96))!important;color:var(--ink)!important;position:relative;overflow:hidden}
+.card:after,.memory-card:after,.memory:after,.quote-card:after{content:"";position:absolute;inset:8px;border:1px dashed rgba(109,48,68,.16);border-radius:12px;pointer-events:none}
+/* scrapbook tape */
+.card:nth-child(3n+1):before,.memory-card:nth-child(3n+1):before,.quote-card:nth-child(3n+1):before{content:"";position:absolute;top:-8px;left:24%;width:74px;height:25px;background:rgba(217,170,179,.52);transform:rotate(-3deg);box-shadow:0 2px 5px rgba(0,0,0,.08);z-index:3}
+.card:nth-child(3n+2):before,.memory-card:nth-child(3n+2):before{content:"";position:absolute;top:-8px;right:18%;width:68px;height:23px;background:rgba(201,164,106,.34);transform:rotate(4deg);z-index:3}
+/* Typography */
+h1,h2,h3,.title,.section-title{letter-spacing:.02em!important;text-wrap:balance}
+.eyebrow,.kicker,.label,.section-kicker{color:var(--blush)!important;letter-spacing:.22em!important}
+/* Hero / cover */
+.hero,.cover,.landing,.hero-section{min-height:88vh!important;background:radial-gradient(circle at 50% 35%,rgba(182,107,125,.18),transparent 35%),linear-gradient(180deg,#171218,#0c0a0e)!important;position:relative;overflow:hidden}
+.hero:after,.cover:after,.landing:after{content:"OUR STORY • MEMORY ALBUM • SINCE 27.11.2025";position:absolute;bottom:34px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:.35em;color:rgba(244,238,229,.46);white-space:nowrap}
+/* Navigation */
+nav,.nav,.navbar,.topbar{backdrop-filter:blur(18px)!important;background:rgba(17,16,22,.76)!important;border-bottom:1px solid rgba(201,164,106,.2)!important}
+button,.btn,.nav a,.nav-link{transition:.25s ease!important}
+button:hover,.btn:hover,.nav a:hover,.nav-link:hover{transform:translateY(-2px);filter:brightness(1.08)}
+/* Quote / chat memories */
+blockquote,.quote,.chat-bubble,.message{background:rgba(255,255,255,.74)!important;color:var(--ink)!important;border-color:rgba(109,48,68,.18)!important}
+.chat-bubble,.message{border-radius:18px 18px 18px 5px!important}
+/* Calendar becomes journal cards */
+.calendar-grid,.calendar{gap:12px!important}
+.calendar-grid>*:hover,.calendar>*:hover,.memory-card:hover,.card:hover{transform:translateY(-4px) rotate(-.3deg)!important;box-shadow:0 18px 38px rgba(0,0,0,.24)!important}
+/* Constellation */
+.constellation,.constellation-section,.stars{background:radial-gradient(circle at 50% 45%,rgba(109,48,68,.32),transparent 42%),#08070b!important}
+/* Every 27th signature */
+.every-27,.signature-date,.happy-27{background:linear-gradient(135deg,#2a1720,#111016)!important;color:#f6e9e6!important;border:1px solid rgba(201,164,106,.28)!important;box-shadow:var(--shadow)!important}
+.every-27 .date,.signature-date .date{color:#d9aab3!important}
+/* Footer */
+footer{background:#0b090c!important;border-top:1px solid rgba(201,164,106,.18)!important;color:#a99a98!important}
+/* Mobile: album pages */
+@media(max-width:700px){
+  body{font-size:15px!important}
+  .hero,.cover,.landing,.hero-section{min-height:78vh!important}
+  .hero:after,.cover:after,.landing:after{font-size:7px;letter-spacing:.22em;bottom:22px}
+  .card,.memory-card,.memory,.quote-card,.timeline-card,.calendar-card,.chat-card{border-radius:14px!important}
+  .card:after,.memory-card:after,.memory:after,.quote-card:after{inset:6px}
+  .calendar-grid,.calendar{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
