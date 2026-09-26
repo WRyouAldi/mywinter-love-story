@@ -26,40 +26,42 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Fix scrapbook access gate
-        shell: python
+        shell: bash
         run: |
+          python3 <<'PY'
           from pathlib import Path
           p = Path('index.html')
           s = p.read_text(encoding='utf-8')
           marker = '<!-- ACCESS-FIX-V2 -->'
           if marker not in s:
               patch = '''
-<!-- ACCESS-FIX-V2 -->
-<style id="access-fix-v2">
-#passwordChoice,#v421Locked{display:none!important;visibility:hidden!important;pointer-events:none!important}
-body.v421-locked{overflow:auto!important}
-body.v421-locked > *{pointer-events:auto!important}
-</style>
-<script>
-(function(){
-  function unlock(){
-    var p=document.getElementById('passwordChoice');
-    var l=document.getElementById('v421Locked');
-    if(p){p.style.display='none';p.setAttribute('aria-hidden','true');}
-    if(l){l.classList.remove('show');l.style.display='none';l.setAttribute('aria-hidden','true');}
-    document.body.classList.remove('v421-locked');
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',unlock,{once:true});
-  else unlock();
-  setTimeout(unlock,50);
-  setTimeout(unlock,250);
-})();
-</script>
-'''
+          <!-- ACCESS-FIX-V2 -->
+          <style id="access-fix-v2">
+          #passwordChoice,#v421Locked{display:none!important;visibility:hidden!important;pointer-events:none!important}
+          body.v421-locked{overflow:auto!important}
+          body.v421-locked > *{pointer-events:auto!important}
+          </style>
+          <script>
+          (function(){
+            function unlock(){
+              var p=document.getElementById('passwordChoice');
+              var l=document.getElementById('v421Locked');
+              if(p){p.style.display='none';p.setAttribute('aria-hidden','true');}
+              if(l){l.classList.remove('show');l.style.display='none';l.setAttribute('aria-hidden','true');}
+              if(document.body) document.body.classList.remove('v421-locked');
+            }
+            if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',unlock,{once:true});
+            else unlock();
+            setTimeout(unlock,50);
+            setTimeout(unlock,250);
+          })();
+          </script>
+          '''
               s += patch
               p.write_text(s, encoding='utf-8')
           else:
               print('Access fix already present; skipping.')
+          PY
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
