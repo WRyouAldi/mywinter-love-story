@@ -1,9 +1,8 @@
-name: Deploy MyWinter Love Story to GitHub Pages
+name: Deploy MyWinter V2 to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -13,7 +12,7 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -23,67 +22,16 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
-      - name: Fix scrapbook access gate
-        shell: bash
-        run: |
-          python3 <<'PY'
-          from pathlib import Path
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-          marker = '<!-- ACCESS-FIX-V2 -->'
-          if marker not in s:
-              patch = '''
-          <!-- ACCESS-FIX-V2 -->
-          <style id="access-fix-v2">
-          #passwordChoice,#v421Locked{display:none!important;visibility:hidden!important;pointer-events:none!important}
-          body.v421-locked{overflow:auto!important}
-          body.v421-locked > *{pointer-events:auto!important}
-          </style>
-          <script>
-          (function(){
-            function unlock(){
-              var p=document.getElementById('passwordChoice');
-              var l=document.getElementById('v421Locked');
-              if(p){p.style.display='none';p.setAttribute('aria-hidden','true');}
-              if(l){l.classList.remove('show');l.style.display='none';l.setAttribute('aria-hidden','true');}
-              if(document.body) document.body.classList.remove('v421-locked');
-            }
-            if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',unlock,{once:true});
-            else unlock();
-            setTimeout(unlock,50);
-            setTimeout(unlock,250);
-          })();
-          </script>
-          '''
-              s += patch
-              p.write_text(s, encoding='utf-8')
-          else:
-              print('Access fix already present; skipping.')
-          PY
-
-      - name: Inject scrapbook revolution theme
-        shell: bash
-        run: |
-          python3 <<'PY'
-          from pathlib import Path
-          p = Path('index.html')
-          s = p.read_text(encoding='utf-8')
-          marker = '<!-- SCRAPBOOK-REVOLUTION-V1 -->'
-          if marker not in s:
-              patch = '''\n          <!-- SCRAPBOOK-REVOLUTION-V1 -->\n          <link rel="stylesheet" href="scrapbook-revolution.css?v=1">\n          '''
-              s += patch
-              p.write_text(s, encoding='utf-8')
-          else:
-              print('Scrapbook revolution theme already injected; skipping.')
-          PY
+      - name: Extract memory data
+        run: python3 scripts/extract_memory_data.py
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
 
