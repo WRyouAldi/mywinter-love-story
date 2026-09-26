@@ -63,6 +63,22 @@ jobs:
               print('Access fix already present; skipping.')
           PY
 
+      - name: Inject scrapbook revolution theme
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          marker = '<!-- SCRAPBOOK-REVOLUTION-V1 -->'
+          if marker not in s:
+              patch = '''\n          <!-- SCRAPBOOK-REVOLUTION-V1 -->\n          <link rel="stylesheet" href="scrapbook-revolution.css?v=1">\n          '''
+              s += patch
+              p.write_text(s, encoding='utf-8')
+          else:
+              print('Scrapbook revolution theme already injected; skipping.')
+          PY
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
