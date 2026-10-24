@@ -1,3 +1,32 @@
 <!doctype html>
-<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#eee9df"><title>MYWINTER / MEMORY MOSAIC</title><link rel="stylesheet" href="styles/memory-mosaic.css?v=2"></head>
-<body><main class="mosaic-app"><header class="mosaic-head"><span class="mosaic-brand">MYWINTER / MEMORY MOSAIC</span><span class="mosaic-head-right"><span id="mosaic-count">LOADING…</span><input id="mosaic-search" class="mosaic-search" placeholder="FIND A FRAGMENT"><button id="mosaic-reset" class="mosaic-reset">RESET</button></span></header><section class="mosaic-stage"><div id="mosaic" class="mosaic" aria-label="Memory fragments"></div><div id="mosaic-detail" class="mosaic-detail"><div id="mosaic-detail-body" class="mosaic-detail-body"></div></div></section><footer class="mosaic-foot"><span>FRAGMENTS FROM OUR CONVERSATIONS</span><span>DRAG / TAP / DISCOVER</span><span>27 → SAYANG → LOVE</span></footer></main><script src="app/memory-mosaic.js?v=2"></script></body></html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#17151b"><meta name="description" content="A living scrapbook of little things, small conversations, and memories from MYWINTER.">
+<title>Little Things — MYWINTER Memory Mosaic</title>
+<link rel="stylesheet" href="styles/memory-mosaic.css?v=3">
+</head>
+<body>
+<main class="mosaic-app">
+<header class="mosaic-head">
+<a class="mosaic-brand" href="#" id="brand-home" aria-label="Kembali ke awal"><span class="brand-mark">✳</span><span>LITTLE THINGS <small>MYWINTER MEMORY MOSAIC</small></span></a>
+<div class="mosaic-head-right"><span class="live-dot"></span><span id="mosaic-count" aria-live="polite">MENYIAPKAN KENANGAN…</span><button id="mosaic-reset" class="mosaic-reset">MULAI LAGI ↺</button></div>
+</header>
+<section class="intro" id="intro">
+<div class="intro-copy"><p class="eyebrow"><span>AN ONGOING LOVE STORY</span><span>✦ EST. 27</span></p>
+<h1>Hal-hal kecil,<br><em>yang berarti banyak.</em></h1>
+<p class="intro-desc">Bukan cuma percakapan. Ini potongan hari, perhatian sederhana, dan cara kita tumbuh lewat kata-kata.</p>
+<div class="intro-actions"><button id="discover-btn" class="primary-btn">Temukan satu kenangan <span>↗</span></button><button id="explore-btn" class="text-btn">Jelajahi mosaik ↓</button></div>
+</div><div class="intro-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><span class="spark s1">✦</span><span class="spark s2">✳</span><span class="spark s3">♡</span><div class="note note-back">little things<br>we keep</div><div class="note note-front"><span>FOR YOU,</span><strong>sayang.</strong><small>and all the ordinary days ♡</small></div><span class="art-caption">A COLLECTION OF US · VOL. 01</span></div>
+</section>
+<section class="story-bar" aria-label="Ringkasan koleksi"><div><span class="stat-label">OUR LITTLE ARCHIVE</span><strong id="stat-count">—</strong><small>potongan kenangan</small></div><div><span class="stat-label">THE STORY SO FAR</span><strong id="stat-range">—</strong><small>rentang percakapan</small></div><div><span class="stat-label">A SMALL REMINDER</span><strong>♡</strong><small>yang sederhana juga berarti</small></div></section>
+<section class="collection" id="collection"><div class="section-heading"><div><p class="eyebrow">THE MEMORY WALL / 01</p><h2>Pick a little piece <em>of us.</em></h2><p class="section-desc">Ketuk kartu untuk membaca lebih dekat. Cari kata, tanggal, atau momen yang ingin kamu temukan lagi.</p></div><div class="collection-tools"><label class="search-wrap"><span>⌕</span><input id="mosaic-search" aria-label="Cari kenangan" placeholder="Cari kenangan…"><kbd>↵</kbd></label><button id="shuffle-btn" class="shuffle-btn" title="Acak kenangan">Acak ✳</button></div></div>
+<div class="mosaic-stage"><div class="wall-label"><span>MEMORY FRAGMENTS</span><span id="wall-hint">TAP A CARD TO OPEN ↗</span></div><div id="mosaic" class="mosaic" aria-label="Kumpulan kartu kenangan"></div><div id="mosaic-loading" class="loading-note"><span class="loader"></span><span>Merangkai potongan cerita…</span></div></div>
+<div class="end-note"><span>✳</span><p>Setiap hal kecil punya tempatnya sendiri.</p><span>♡</span></div>
+</section>
+<footer class="mosaic-foot"><span>LITTLE THINGS, KEPT WITH LOVE.</span><span>MADE OF WORDS · HELD IN MEMORY</span><a href="#intro">KEMBALI KE ATAS ↑</a></footer>
+</main>
+<div id="mosaic-detail" class="mosaic-detail" role="dialog" aria-modal="true" aria-label="Detail kenangan"><button class="detail-close" id="detail-close" aria-label="Tutup detail">×</button><div id="mosaic-detail-body" class="mosaic-detail-body"></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="app/memory-mosaic.js?v=3"></script>
+</body></html>
