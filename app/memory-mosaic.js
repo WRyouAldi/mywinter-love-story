@@ -4,7 +4,7 @@
   let memories=[],active=null,toastTimer=null;
   const escape=(v='')=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
   const textOf=m=>m.text||m.content||m.message||m.quote||m.body||'';
-  const dateOf=m=>m.date||m.timestamp||m.datetime||'';
+  const dateOf=m=>m.datetime||m.timestamp||m.date||'';
   const tagsOf=m=>Array.isArray(m.tags)?m.tags:(m.tags?String(m.tags).split(',').map(x=>x.trim()).filter(Boolean):[]);
   const normalize=(m,i)=>({...m,_i:i,_text:String(textOf(m)),_date:String(dateOf(m)),_tags:tagsOf(m)});
   const shortDate=v=>{if(!v)return 'A LITTLE MEMORY';const d=new Date(v);return Number.isNaN(d.getTime())?String(v):d.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}).toUpperCase();};
