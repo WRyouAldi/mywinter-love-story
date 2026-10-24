@@ -23,14 +23,14 @@
     mosaic.innerHTML='';count.textContent=list.length.toLocaleString('id-ID')+' KENANGAN';
     $('#wall-hint').textContent=list.length?'KETUK KARTU UNTUK MEMBUKA ↗':'COBA KATA KUNCI LAIN';
     if(!list.length){mosaic.innerHTML='<div class="mosaic-empty">Belum ada potongan yang cocok. Coba kata lain, ya.</div>';return;}
-    const visible=list.length>72?list.filter((_,i)=>i%Math.ceil(list.length/72)===0).slice(0,72):list,positions=makePositions(visible.length);
+    const visible=list.length>72?list.slice(-72).reverse():[...list].reverse(),positions=makePositions(visible.length);
     visible.forEach((m,i)=>{const el=document.createElement('button');el.type='button';el.className='mosaic-fragment';el.dataset.index=m._i;el.style.setProperty('--x',positions[i].x+'%');el.style.setProperty('--y',positions[i].y+'%');el.style.setProperty('--r',positions[i].r+'deg');el.style.setProperty('--delay',Math.min(i*16,480)+'ms');const txt=m._text.length>100?m._text.slice(0,100)+'…':m._text;
-      el.innerHTML='<span class="fragment-index">'+String(i+1).padStart(2,'0')+'</span><span class="fragment-date">'+escape(shortDate(m._date))+'</span><span class="fragment-text">'+escape(txt||'A little memory.')+'</span><span class="fragment-hint">OPEN MEMORY ↗</span>';
+      el.innerHTML='<span class="fragment-index">'+String(i+1).padStart(2,'0')+'</span><span class="fragment-date">'+escape(shortDate(m._date))+(m.sender?' · '+escape(m.sender):'')+'</span><span class="fragment-text">'+escape(txt||'A little memory.')+'</span><span class="fragment-hint">OPEN MEMORY ↗</span>';
       el.setAttribute('aria-label','Buka kenangan: '+m._text.slice(0,80));el.addEventListener('click',()=>open(m));mosaic.appendChild(el);});
   }
   function open(m){
     active=m;$$('.mosaic-fragment').forEach(el=>el.classList.toggle('is-muted',Number(el.dataset.index)!==m._i));
-    detailBody.innerHTML='<div class="detail-kicker">✳ A LITTLE PIECE OF US / '+String(m._i+1).padStart(3,'0')+'</div><h2>'+escape(m._text||'A little memory.')+'</h2><div class="detail-meta">'+escape(shortDate(m._date))+(m._tags.length?' · '+escape(m._tags.join(' · ')):'')+'</div><p class="detail-note">Ada hal-hal kecil yang mungkin terasa biasa saat terjadi, tapi tetap layak disimpan. Inilah salah satu potongan cerita kita. ♡</p><button class="detail-source" id="detail-source">LIHAT KONTEKS ASLI →</button>';
+    detailBody.innerHTML='<div class="detail-kicker">✳ A LITTLE PIECE OF US / '+String(m._i+1).padStart(3,'0')+'</div><h2>'+escape(m._text||'A little memory.')+'</h2><div class="detail-meta">'+escape(shortDate(m._date))+(m.time?' · '+escape(m.time):'')+(m.sender?' · '+escape(m.sender):'')+(m._tags.length?' · '+escape(m._tags.join(' · ')):'')+'</div><p class="detail-note">Pesan ini berasal dari arsip percakapan. ♡</p><button class="detail-source" id="detail-source">LIHAT KONTEKS ASLI →</button>';
     detail.classList.add('open');root.classList.add('mosaic-focus');$('#detail-close').focus();$('#detail-source').onclick=()=>showContext(m);
   }
   function showContext(m){
@@ -50,8 +50,8 @@
   async function loadFullDataset(){
     try{const idxRes=await fetch('data/index.json?v=3',{cache:'no-store'});if(!idxRes.ok)throw new Error('index');const idx=await idxRes.json(),all=[];
       for(const file of idx.chunks||[]){const r=await fetch('data/chunks/'+file+'?v=3',{cache:'force-cache'});if(!r.ok)throw new Error(file);all.push(...await r.json());count.textContent='MERANGKAI '+all.length.toLocaleString('id-ID')+' / '+Number(idx.message_count||0).toLocaleString('id-ID');}
-      memories=all.map(normalize).filter(m=>m._text||m._date);
-    }catch(e){try{const r=await fetch('data/memories.json?v=3',{cache:'no-store'});if(!r.ok)throw e;const data=await r.json(),source=Array.isArray(data)?data:(data.memories||data.items||data.data||[]);memories=source.map(normalize).filter(m=>m._text||m._date);}
+      memories=all.map(normalize).filter(m=>m._text||m._date).sort((a,b)=>new Date(a._date)-new Date(b._date));
+    }catch(e){try{const r=await fetch('data/memories.json?v=3',{cache:'no-store'});if(!r.ok)throw e;const data=await r.json(),source=Array.isArray(data)?data:(data.memories||data.items||data.data||[]);memories=source.map(normalize).filter(m=>m._text||m._date).sort((a,b)=>new Date(a._date)-new Date(b._date));}
       catch(_){count.textContent='ARSIP BELUM TERSEDIA';mosaic.innerHTML='<div class="mosaic-empty">Kenangan belum bisa dimuat. Coba muat ulang halaman.</div>';loading.classList.add('hidden');showToast('Koneksi ke arsip belum berhasil.');return;}}
     updateStats();render();loading.classList.add('hidden');
   }
