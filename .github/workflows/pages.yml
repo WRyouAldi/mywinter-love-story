@@ -32,10 +32,11 @@ jobs:
       - name: Verify V2 artifact
         run: |
           test -f dist/index.html
-          test -f dist/app/memory-engine.js
-          test -f dist/styles/v2-experience.css
+          test -f dist/app/memory-mosaic.js
+          test -f dist/styles/memory-mosaic.css
           test ! -e dist/legacy
-          grep -q "Living Memory Archive" dist/index.html
+          grep -q "portrait-gallery" dist/index.html
+          test -f dist/assets/.gitkeep
           echo "V2 artifact verified; legacy excluded."
 
       - name: Configure Pages
