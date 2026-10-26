@@ -36,7 +36,7 @@ jobs:
           test -f dist/styles/memory-mosaic.css
           test ! -e dist/legacy
           grep -q "portrait-gallery" dist/index.html
-          test -f dist/assets/.gitkeep
+          test -d dist/assets
           echo "V2 artifact verified; legacy excluded."
 
       - name: Configure Pages
